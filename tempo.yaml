@@ -1,0 +1,51 @@
+replicas: 1
+tempo:
+  extraArgs:
+    "distributor.log-received-traces": true
+  resources:
+    limits:
+      cpu: 100m
+      memory: 200Mi
+    requests:
+      cpu: 50m
+      memory: 100Mi
+  # -- If true, enables Tempo's native search
+  searchEnabled: true
+  ingester: {}
+  retention: 168h
+
+  receivers:
+    jaeger:
+      protocols:
+        grpc:
+          endpoint: 0.0.0.0:14250
+        thrift_binary:
+          endpoint: 0.0.0.0:6832
+        thrift_compact:
+          endpoint: 0.0.0.0:6831
+        thrift_http:
+          endpoint: 0.0.0.0:14268
+    zipkin:
+    otlp:
+      protocols:
+        grpc:
+          endpoint: "0.0.0.0:4317"
+        http:
+          endpoint: "0.0.0.0:4318"
+
+
+
+serviceMonitor:
+  enabled: true
+  interval: "30s"
+  additionalLabels: # {}
+    release: monitoring-prometheus-operator
+  annotations: {}
+  scrapeTimeout: 10s
+
+persistence:
+  enabled: false
+  # storageClassName: local-path
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi

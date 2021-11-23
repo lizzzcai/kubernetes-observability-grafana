@@ -1,0 +1,34 @@
+config:
+  chunk_store_config:
+    max_look_back_period: 168h
+  table_manager:
+    retention_deletes_enabled: true
+    retention_period: 168h
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 200Mi
+  requests:
+    cpu: 50m
+    memory: 100Mi
+
+persistence:
+  enabled: false
+  accessModes:
+  - ReadWriteOnce
+  size: 10Gi
+  annotations: {}
+  # selector:
+  #   matchLabels:
+  #     app.kubernetes.io/name: loki
+  # subPath: ""
+  # existingClaim:
+
+serviceMonitor:
+  enabled: true
+  interval: "30s"
+  additionalLabels: # {}
+    release: monitoring-prometheus-operator
+  annotations: {}
+  scrapeTimeout: 10s
